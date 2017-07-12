@@ -1,0 +1,51 @@
+/*
+          font-weight settings:
+ Ultra Light                        |  100
+ Thin                               |  200
+ Light                              |  300
+ Normal, Roman, Regular             |  400
+ Medium                             |  500
+ Bold                               |  600
+ Heavy                              |  700
+ Black                              |  800
+ Extra Black                        |  900
+
+*/
+
+@font-face {
+	font-family: "OpenSans";
+	src: url("../fonts/OpenSans-Light.ttf") format("truetype");
+	font-style: normal;
+	font-weight: 300;
+}
+
+@font-face {
+	font-family: "OpenSans";
+	src: url("../fonts/OpenSans-Regular.ttf") format("truetype");
+	font-style: normal;
+	font-weight: 400;
+}
+
+@font-face {
+	font-family: "OpenSans";
+	src: url("../fonts/OpenSansSemiBold.ttf") format("truetype");
+	font-style: normal;
+	font-weight: 500;
+}
+
+@font-face {
+	font-family: "OpenSans";
+	src: url("../fonts/OpenSans-Bold.ttf") format("truetype");
+	font-style: normal;
+	font-weight: 600;
+}
+
+@font-face {
+	font-family: "OpenSans";
+	src: url("../fonts/OpenSans-ExtraBold.ttf") format("truetype");
+	font-style: normal;
+	font-weight: 700;
+}
+
+
+
