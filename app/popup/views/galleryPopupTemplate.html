@@ -1,0 +1,39 @@
+<div class="popup-wrapper flexible row space-between">
+	<div class="full-width-image-wrapper">
+		<img ng-src="{{popupImage.blob}}" alt="">
+		<div class="info-panel-container second flexible row">
+			<div class="info-dislike edit" ng-click="addLikeDislike($event)" data-choose="dislike" ng-class="{active: activeDislike}">
+				<p class="info-text" ng-bind="popupImage.dislike"></p>
+			</div>
+			<div class="info-like edit" ng-click="addLikeDislike($event)" data-choose="like" ng-class="{active: activeLike}">
+				<p class="info-text" ng-bind="popupImage.like"></p>
+			</div>
+		</div>
+	</div>
+
+	<div class="comments-container">
+		<p class="comments-amount">Comments: <span ng-bind="amountOfComments[popupImage.id]"></span></p>
+		<div class="comments-wrapper">
+
+			<div class="comment-container" ng-repeat="comm in comments">
+				<div class="comment-info flexible row space-between">
+					<p class="" ng-bind="comm.nickname"></p>
+					<p class="" ng-bind="comm.day +' ' + comm.time"></p>
+				</div>
+				<p class="comment" ng-bind="comm.comment"></p>
+			</div>
+
+		</div>
+
+		<form action="" name="form-comment" class="form-container" ng-submit="submitComment($event)">
+			<input type="text" name="nickName" placeholder="Type your nickname here..." class="nick-name" maxlength="20" ng-model="form.nickname">
+			<div class="textarea-wrapper">
+				<textarea type="text" placeholder="Write your comment here..." class="textarea" rows="25" cols="5" ng-model="form.comment"></textarea>
+				<input type="image" name="submit" class="submit" value="" >
+			</div>
+		</form>
+	</div>
+
+
+	<div class="close-button" ng-click="closePopup()"></div>
+</div>

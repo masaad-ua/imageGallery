@@ -1,19 +1,66 @@
-module.exports = function (CreateDb, WorkWithDB){
+module.exports = function (CreateDb, CreateTransactionDB, GetImagesFromDB, GetCommentsFromDB, GetFromLocalStorage){
 	return{
 		restrict: 'E',
-		scope:{},
+		scope:{
+			openPopup: "&",
+			amountOfComments: "=amountOfComments",
+			listOfImages: "=listOfImages"
+		},
 		template: require('./views/galleryImagesTemplate.html'),
+
 		link: function(scope, element, attr){
-			CreateDb.createDB();
 
-			scope.tut = 2;
-			//console.log(scope.hui);
-			//setTimeout(function(){
-			//	console.log(CreateDb.db);
-			//},1000);
+			scope.dragItemStyle = GetFromLocalStorage.gettingFromLocal("dragItemStyle");
+			scope.amountOfComments = GetFromLocalStorage.gettingFromLocal("amountOfComments") || {};
 
-			//scope.db = CreateDb.db;
-			//console.log(scope);
+
+			scope.addWidth = {};
+			scope.amountOfList = function(index){
+				scope.counttlist = index;
+			};
+			var indexList = 0;
+
+			scope.changeWidth = function(fifthItem){
+				if(fifthItem === 4){
+					scope.addWidth[scope.counttlist] = true
+				}
+				else if(fifthItem === 0){
+					scope.addWidth[indexList] = false;
+					indexList = scope.counttlist;
+				}
+			};
+
+
+			scope.getAmountOfComments = function(idImage){
+				var objectStore2 = new CreateTransactionDB.createTransaction(CreateDb.db, "comments", "readonly");
+				GetCommentsFromDB.getComments.call(objectStore2, idImage, new Date);
+
+				var promise2 = GetCommentsFromDB.getComments.call(objectStore2, idImage, new Date);
+				promise2.then(
+					function(arr){
+
+					}
+				)
+
+			};
+
+			var promise = CreateDb.createDB();
+			promise.then(function(db){
+				var objectStore = new CreateTransactionDB.createTransaction(db, "images", "readonly");
+				return GetImagesFromDB.getImagesFrom.call(objectStore);
+			},function(arg){
+				//console.log(arg);
+			}).then(
+				function(arq){
+					scope.listOfImages = arq;
+					setTimeout(function(){
+						element[0].scrollLeft = element[0].scrollWidth - element[0].clientWidth;
+					},0);
+
+				}
+			);
+
+
 		}
 	}
 };

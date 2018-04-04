@@ -1,13 +1,29 @@
-<div class="gallery">
+<div class="gallery flexible row">
 
-	<!--<div ng-repeat="list in listOfImages" class="item">-->
-		<!--<img src="listOfImages" alt="">-->
-		<!--<div class="bottom-panel conatiner">-->
 
-		<!--</div>-->
-	<!--</div>-->
+	<div ng-repeat="list in listOfImages" class="items-container" ng-class="{'add-width' : addWidth[$index]}" ng-init="amountOfList($index)">
 
-	<div class="placeholder" drag-item db="db">
+		<div ng-repeat="item in list" class="item square" ng-click="openPopup({obj:{id: item.id, blob: item.blob, like: item.like, dislike: item.dislike}})" id="item{{item.id}}" ng-init="changeWidth($index)" >
+			<img ng-src="{{item.blob}}"  alt="" class="square" >
+			<div class="info-panel-container flexible row">
+				<div class="info-comments info">
+					<p class="info-text" ng-bind="amountOfComments[item.id]"></p>
+				</div>
+				<div class="info-dislike info">
+					<p class="info-text" ng-bind="item.dislike"></p>
+				</div>
+				<div class="info-like info">
+					<p class="info-text" ng-bind="item.like"></p>
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+	<div  class="placeholder" drag-item list="listOfImages" amount-of-comments="amountOfComments" ng-style="dragItemStyle" drag-item-style="dragItemStyle">
 		<div class="plus"></div>
 		<p>Add your<br/>Picture</p>
 	</div>

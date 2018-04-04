@@ -1,35 +1,24 @@
-module.exports = function AddImageToDB(){
+module.exports = function AddImageToDB($q){
 
-	//var that = this;
-
-	this.addImage = function(objectStore, arrayFiles, lastId) {
-
-		//var transaction = db.transaction([nameBase], "readwrite");
-		//transaction.oncomplete = function(event) {
-		//	console.log("All done!");
-		//};
-		//transaction.onerror = function(event) {
-		//	console.log("ERROR in adding");
-		//};
-		//var objectStore = transaction.objectStore(nameBase);
+	this.addImage = function(arrayFiles, lastId) {
+		var vm = this;
+		return $q(function(resolve, reject) {
 		var id = lastId + 1;
 		for (var i = 0; i < arrayFiles.length; i++) {
-			var request = objectStore.add({
+			var request = vm.objectStore.add({
 				id: id,
 				blob: arrayFiles[i],
 				like: 0,
 				dislike: 0
 			});
 			id++;
-			console.log(arrayFiles[i]);
-			request.onsuccess = function (event){
-				console.log("Success !");
+			request.onsuccess = function(event){
+				resolve(id - 1);
+				console.log("Success ! in added");
+				}
 			}
-
-		}
-
+		})
 	};
-
 
 
 };

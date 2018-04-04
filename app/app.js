@@ -3,11 +3,16 @@ var app = angular.module("imageGallery", ["ui.router","ngSanitize"]);
 
 
 //services
-app.service('Auth', require('./services/auth'));
 app.service('CreateDb', require('./services/createDb'));
-app.service('WorkWithDB', require('./services/workWithDB'));
+app.service('CreateTransactionDB', require('./services/createTransactionDB'));
+app.service('GetLastIdDB', require('./services/getLastIdDB'));
+
+app.service('GetFromLocalStorage', require('./services/getFromLocalStorage'));
+app.service('AddToLocalStorage', require('./services/addToLocalStorage'));
+
 // common
 
 
 // modules
 require('./gallery')(app);
+require('./popup')(app);

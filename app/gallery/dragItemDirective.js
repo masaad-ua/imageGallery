@@ -1,9 +1,13 @@
-module.exports = function($q, CreateDb, WorkWithDB, AddImageToDB){
+module.exports = function($q, CreateDb, CreateTransactionDB, GetLastIdDB, AddImageToDB, GetAll, AddToLocalStorage, $rootScope){
 	return{
 		restrict: 'A',
-		scope: true,
+		scope:{
+			list: "=list",
+			amountOfComments: "=amountOfComments",
+			dragItemStyle: "=dragItemStyle"
+		},
 		link: function(scope, element, attr){
-			var lastIdImages = 0;
+			var lastId = 0;
 
 			function stopEvent(event){
 				event.stopPropagation();
@@ -14,6 +18,7 @@ module.exports = function($q, CreateDb, WorkWithDB, AddImageToDB){
 			element[0].addEventListener("dragover",stopEvent);
 
 			element[0].addEventListener("drop", function(event){
+				// Подавить событие перетаскивания файла
 				event.stopPropagation();
 				event.preventDefault();
 
@@ -22,51 +27,75 @@ module.exports = function($q, CreateDb, WorkWithDB, AddImageToDB){
 
 				// Получить список загружаемых файлов
 				var files = dt.files;
-				console.log(files);
 
-				//var workWithDB2 = new WorkWithDB.createTransaction(CreateDb.db,"images","readwrite");
-				//var promise =  WorkWithDB.getLastId.call(workWithDB2);
-				var promise = WorkWithDB.createTransaction(CreateDb.db, "images","readwrite", WorkWithDB.getLastId);
+				var objectStore = new CreateTransactionDB.createTransaction(CreateDb.db,"images","readwrite");
+				var promise =  GetLastIdDB.getLastId.call(objectStore);
+				promise
+					.then(function(id){
+						var objectStore2 = new CreateTransactionDB.createTransaction(CreateDb.db,"images","readwrite");
 
-				promise.then(function(arg){
-					//console.log(arg);
-					//lastIdImages = arg;
-					WorkWithDB.createTransaction(CreateDb.db,"images","readwrite", AddImageToDB.addImage, files, arg)
-					//var workWithDB = new WorkWithDB.createTransaction(CreateDb.db,"images","readwrite");
-					//AddImageToDB.addImage.call(workWithDB, files, arg);
+						Object.keys(files).forEach(function(index, element, arr){
+							scope.amountOfComments[(id + 1) + ( +index )] = 0
+						});
+						AddToLocalStorage.addingToLocal(scope.amountOfComments,"amountOfComments");
+						return AddImageToDB.addImage.call(objectStore2, files, id);
+						},
+						function(){
+							console.log("Error with definition id");
+						})
+					.then(function(newId){
+						lastId = newId;
+						var currentLength = (function(){
+							var length = [];
+							for(var i = 0; i < scope.list.length; i++){
+								length = length.concat(scope.list[i]);
+							}
+							return length.length;
+						})();
+						//console.log(currentLength);
+						var objectStore = new CreateTransactionDB.createTransaction(CreateDb.db,"images","readwrite");
+						return GetAll.getAllItems.call(objectStore, currentLength);
+						})
+					.then(function(array){
+							function pushItem(element){
+								scope.list[scope.list.length - 1].push({
+									id: element.id,
+									blob:  window.URL.createObjectURL(element.blob),
+									like: element.like,
+									dislike: element.dislike
+								});
+							}
+							array.forEach(function(element, index, arr){
+								if(scope.list.length === 0 || scope.list[scope.list.length - 1].length === 9){
+									scope.list.push([]);
+									pushItem(element);
+								}else {
+									pushItem(element);
+								}
+							});
+							return scope.list;
+						})
+					.then(function(newArray){
+							var amountOfContainer = 0,
+								amountOfItem = newArray[newArray.length - 1].length;
+							if(newArray.length > 1){
+								amountOfContainer = newArray.length - 1;
+								amountOfItem = (amountOfContainer * 9) + newArray[newArray.length - 1].length;
+							}
 
-				}, function(arg){
-					console.log("Error WTF!");
-				});
-				//console.log(promise);
+							setTimeout(function(){
+								var lastElemFromList = document.querySelector("#item" + amountOfItem),
+									widthLastElem = lastElemFromList.offsetWidth,
+									offsetTopLastElem = lastElemFromList.offsetTop,
+									offsetLeftLastElem = lastElemFromList.offsetLeft + lastElemFromList.offsetParent.offsetLeft;
+								scope.dragItemStyle = {
+									transform: "translate3d(" + (offsetLeftLastElem + widthLastElem + 10) +"px, " + offsetTopLastElem + "px, 0px)"
+								};
+								AddToLocalStorage.addingToLocal(scope.dragItemStyle, "dragItemStyle");
+								$rootScope.$digest();
+							},0);
+						});
 
-				//WorkWithDB.getLastId(WorkWithDB.objectStore);
-				//WorkWithDB.createTransaction(CreateDb.db, "images","readwrite");
-				//setTimeout(function(){
-				//	console.log(WorkWithDB.lastId)
-				//},1000);
-
-				//addData.add(CreateDb.db,"images",files[0]);
-
-				//for (var i = 0; i < files.length; i++) {
-				//	if (files[i].size < 15000000 ) {
-				//
-				//		//var reader = new FileReader;
-				//		//var file = files[i];
-				//		//
-				//		//reader.onloadend = function() {
-				//		//	console.log('RESULT', reader.result)
-				//		//};
-				//		////reader.readAsArrayBuffer(file);
-				//		////reader.readAsBinaryString(file);
-				//		//reader.readAsDataURL(file);
-				//
-				//	}
-				//	else {
-				//		alert('Размер файла превышает допустимое значение');
-				//	}
-				//}
-				// Подавить событие перетаскивания файла
 				return false;
 			});
 
