@@ -1,4 +1,10 @@
-module.exports = function (CreateDb, CreateTransactionDB, GetImagesFromDB, GetCommentsFromDB, GetFromLocalStorage){
+module.exports = function (CreateDb,
+                           DeleteDb,
+                           CreateTransactionDB,
+                           GetImagesFromDB,
+                           GetCommentsFromDB,
+                           GetFromLocalStorage,
+                           DeleteLocalStorage){
 	return{
 		restrict: 'E',
 		scope:{
@@ -59,8 +65,11 @@ module.exports = function (CreateDb, CreateTransactionDB, GetImagesFromDB, GetCo
 
 				}
 			);
-
-
+			//window.addEventListener("unload", function(e){
+			//	DeleteDb.deleteDB();
+			//	GetFromLocalStorage.gettingFromLocal("dragItemStyle") && DeleteLocalStorage.deletingFromLocalStorage("dragItemStyle");
+			//	GetFromLocalStorage.gettingFromLocal("amountOfComments") && DeleteLocalStorage.deletingFromLocalStorage("amountOfComments");
+			//});
 		}
 	}
 };

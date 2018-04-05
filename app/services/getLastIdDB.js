@@ -3,7 +3,6 @@
 module.exports = function GetLastIdDB($q){
 	var that = this;
 	that.arrayOfKeys =[];
-	that.lastId = 0;
 
 	this.getLastId = function(){
 		var vm = this;
@@ -25,7 +24,5 @@ module.exports = function GetLastIdDB($q){
 				}
 			};
 		});
-
-
 	}
 };

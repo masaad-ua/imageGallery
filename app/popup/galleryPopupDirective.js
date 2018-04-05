@@ -69,7 +69,7 @@ module.exports = function($q, CreateDb, CreateTransactionDB, GetLastIdDB, AddCom
 			scope.addLikeDislike = function(event){
 				var amount,
 				objectStore4 = new CreateTransactionDB.createTransaction(CreateDb.db, "images", "readwrite");
-				if(event.target.dataset.choose === "like"){
+				if(event.currentTarget.dataset.choose === "like"){
 					amount = ++scope.popupImage.like;
 					scope.activeLike = true;
 					scope.activeDislike = false;

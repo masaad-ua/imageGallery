@@ -2,7 +2,7 @@
 
 This image gallery was done according to test task from Viseven;
 
-### What there have to be done###
+### What there have to be done ###
 
 #### Technical requirements: ####
 * Run task using HTML5, CSS3, JavaScript;

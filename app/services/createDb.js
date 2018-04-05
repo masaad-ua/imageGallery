@@ -13,7 +13,6 @@ module.exports = function CreateDb($q){
 
 			request.onsuccess = function(event) {
 				resolve(that.db = request.result);
-				//db = event.target.result;
 				console.log("Request was created!");
 			};
 			request.onerror = function(event) {
@@ -29,9 +28,5 @@ module.exports = function CreateDb($q){
 			};
 
 		});
-
-		}
-
-
-
+	}
 };
