@@ -54,7 +54,7 @@ module.exports = function($q, CreateDb, CreateTransactionDB, GetLastIdDB, AddCom
 								});
 
 								scope.amountOfComments[scope.popupImage.id] = scope.comments.length;
-								AddToLocalStorage.addingToLocal(scope.amountOfComments);
+								AddToLocalStorage.addingToLocal(scope.amountOfComments,  "amountOfComments");
 								var objectStore2 = new CreateTransactionDB.createTransaction(CreateDb.db,"comments","readwrite");
 								return AddCommentToDB.addComment.call(objectStore2, objComment);
 						},

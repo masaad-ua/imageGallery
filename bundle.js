@@ -55,13 +55,13 @@
 
 	app.service('GetFromLocalStorage', __webpack_require__(5));
 	app.service('AddToLocalStorage', __webpack_require__(6));
-	app.service('DeleteLocalStorage', __webpack_require__(22));
+	app.service('DeleteLocalStorage', __webpack_require__(7));
 
 	// common
 
 	// modules
-	__webpack_require__(7)(app);
-	__webpack_require__(16)(app);
+	__webpack_require__(8)(app);
+	__webpack_require__(17)(app);
 
 /***/ }),
 /* 1 */
@@ -190,23 +190,35 @@
 
 /***/ }),
 /* 7 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	module.exports = function DeleteLocalStorage() {
+		this.deletingFromLocalStorage = function (key) {
+			localStorage.removeItem(key);
+		};
+	};
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	module.exports = function (app) {
 
-		app.service('GetImagesFromDB', __webpack_require__(8));
-		app.service('GetAll', __webpack_require__(9));
-		app.service('AddImageToDB', __webpack_require__(10));
+		app.service('GetImagesFromDB', __webpack_require__(9));
+		app.service('GetAll', __webpack_require__(10));
+		app.service('AddImageToDB', __webpack_require__(11));
 
-		app.directive('gallery', __webpack_require__(11));
-		app.directive('galleryImages', __webpack_require__(13));
-		app.directive('dragItem', __webpack_require__(15));
+		app.directive('gallery', __webpack_require__(12));
+		app.directive('galleryImages', __webpack_require__(14));
+		app.directive('dragItem', __webpack_require__(16));
 	};
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -248,7 +260,7 @@
 	};
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -270,7 +282,7 @@
 	};
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -299,7 +311,7 @@
 	};
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -308,7 +320,7 @@
 		return {
 			restrict: 'E',
 			scope: {},
-			template: __webpack_require__(12),
+			template: __webpack_require__(13),
 			bindToController: true,
 			controller: function controller() {
 				this.title = "WELCOME TO VISEVEN <span class='another-colour'>IMAGESTOCK</span>";
@@ -329,13 +341,13 @@
 	};
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports) {
 
 	module.exports = "<h1 class=\"title-h1\"  ng-bind-html=\"gall.title\"></h1>\r\n<gallery-images class=\"gallery-wrapper\" open-popup=\"gall.openPopup(obj)\" amount-of-comments=\"gall.amountOfComments\" list-of-images=\"listOfImages\"></gallery-images>\r\n<gallery-popup class=\"popup-container\" ng-if=\"gall.popupActive\" popup-image=\"gall.popupImage\" popup-active=\"gall.popupActive\" amount-of-comments=\"gall.amountOfComments\" list-of-images=\"listOfImages\"></gallery-popup>\r\n\r\n\r\n";
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -348,7 +360,7 @@
 				amountOfComments: "=amountOfComments",
 				listOfImages: "=listOfImages"
 			},
-			template: __webpack_require__(14),
+			template: __webpack_require__(15),
 
 			link: function link(scope, element, attr) {
 
@@ -400,13 +412,13 @@
 	};
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 	module.exports = "<div class=\"gallery flexible row\">\r\n\r\n\r\n\t<div ng-repeat=\"list in listOfImages\" class=\"items-container\" ng-class=\"{'add-width' : addWidth[$index]}\" ng-init=\"amountOfList($index)\">\r\n\r\n\t\t<div ng-repeat=\"item in list\" class=\"item square\" ng-click=\"openPopup({obj:{id: item.id, blob: item.blob, like: item.like, dislike: item.dislike}})\" id=\"item{{item.id}}\" ng-init=\"changeWidth($index)\" >\r\n\t\t\t<img ng-src=\"{{item.blob}}\"  alt=\"\" class=\"square\" >\r\n\t\t\t<div class=\"info-panel-container flexible row\">\r\n\t\t\t\t<div class=\"info-comments info\">\r\n\t\t\t\t\t<p class=\"info-text\" ng-bind=\"amountOfComments[item.id]\"></p>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"info-dislike info\">\r\n\t\t\t\t\t<p class=\"info-text\" ng-bind=\"item.dislike\"></p>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"info-like info\">\r\n\t\t\t\t\t<p class=\"info-text\" ng-bind=\"item.like\"></p>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t</div>\r\n\r\n\t\t</div>\r\n\r\n\t</div>\r\n\r\n\r\n\t<div  class=\"placeholder\" drag-item list=\"listOfImages\" amount-of-comments=\"amountOfComments\" ng-style=\"dragItemStyle\" drag-item-style=\"dragItemStyle\">\r\n\t\t<div class=\"plus\"></div>\r\n\t\t<p>Add your<br/>Picture</p>\r\n\t</div>\r\n</div>\r\n\r\n\r\n\r\n";
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -513,22 +525,22 @@
 	};
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 
 	module.exports = function (app) {
 
-		app.service('AddCommentToDB', __webpack_require__(17));
-		app.service('GetCommentsFromDB', __webpack_require__(18));
-		app.service('AddLikeDislikeToDB', __webpack_require__(19));
+		app.service('AddCommentToDB', __webpack_require__(18));
+		app.service('GetCommentsFromDB', __webpack_require__(19));
+		app.service('AddLikeDislikeToDB', __webpack_require__(20));
 
-		app.directive('galleryPopup', __webpack_require__(20));
+		app.directive('galleryPopup', __webpack_require__(21));
 	};
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -549,7 +561,7 @@
 	};
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -616,7 +628,7 @@
 	};
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -642,7 +654,7 @@
 	};
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -656,7 +668,7 @@
 				amountOfComments: "=amountOfComments",
 				listOfImages: "=listOfImages"
 			},
-			template: __webpack_require__(21),
+			template: __webpack_require__(22),
 			link: function link(scope) {
 
 				function createComments() {
@@ -702,7 +714,7 @@
 							});
 
 							scope.amountOfComments[scope.popupImage.id] = scope.comments.length;
-							AddToLocalStorage.addingToLocal(scope.amountOfComments);
+							AddToLocalStorage.addingToLocal(scope.amountOfComments, "amountOfComments");
 							var objectStore2 = new CreateTransactionDB.createTransaction(CreateDb.db, "comments", "readwrite");
 							return AddCommentToDB.addComment.call(objectStore2, objComment);
 						}, function () {
@@ -742,22 +754,10 @@
 	};
 
 /***/ }),
-/* 21 */
-/***/ (function(module, exports) {
-
-	module.exports = "<div class=\"popup-wrapper flexible row space-between\">\r\n\t<div class=\"full-width-image-wrapper\">\r\n\t\t<img ng-src=\"{{popupImage.blob}}\" alt=\"\">\r\n\t\t<div class=\"info-panel-container second flexible row\">\r\n\t\t\t<div class=\"info-dislike edit\" ng-click=\"addLikeDislike($event)\" data-choose=\"dislike\" ng-class=\"{active: activeDislike}\">\r\n\t\t\t\t<p class=\"info-text\" ng-bind=\"popupImage.dislike\"></p>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"info-like edit\" ng-click=\"addLikeDislike($event)\" data-choose=\"like\" ng-class=\"{active: activeLike}\">\r\n\t\t\t\t<p class=\"info-text\" ng-bind=\"popupImage.like\"></p>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</div>\r\n\r\n\t<div class=\"comments-container\">\r\n\t\t<p class=\"comments-amount\">Comments: <span ng-bind=\"amountOfComments[popupImage.id]\"></span></p>\r\n\t\t<div class=\"comments-wrapper\">\r\n\r\n\t\t\t<div class=\"comment-container\" ng-repeat=\"comm in comments\">\r\n\t\t\t\t<div class=\"comment-info flexible row space-between\">\r\n\t\t\t\t\t<p class=\"\" ng-bind=\"comm.nickname\"></p>\r\n\t\t\t\t\t<p class=\"\" ng-bind=\"comm.day +' ' + comm.time\"></p>\r\n\t\t\t\t</div>\r\n\t\t\t\t<p class=\"comment\" ng-bind=\"comm.comment\"></p>\r\n\t\t\t</div>\r\n\r\n\t\t</div>\r\n\r\n\t\t<form action=\"\" name=\"form-comment\" class=\"form-container\" ng-submit=\"submitComment($event)\">\r\n\t\t\t<input type=\"text\" name=\"nickName\" placeholder=\"Type your nickname here...\" class=\"nick-name\" maxlength=\"20\" ng-model=\"form.nickname\">\r\n\t\t\t<div class=\"textarea-wrapper\">\r\n\t\t\t\t<textarea type=\"text\" placeholder=\"Write your comment here...\" class=\"textarea\" rows=\"25\" cols=\"5\" ng-model=\"form.comment\"></textarea>\r\n\t\t\t\t<input type=\"image\" name=\"submit\" class=\"submit\" value=\"\" >\r\n\t\t\t</div>\r\n\t\t</form>\r\n\t</div>\r\n\r\n\r\n\t<div class=\"close-button\" ng-click=\"closePopup()\"></div>\r\n</div>";
-
-/***/ }),
 /* 22 */
 /***/ (function(module, exports) {
 
-	'use strict';
-
-	module.exports = function DeleteLocalStorage() {
-		this.deletingFromLocalStorage = function (key) {
-			localStorage.removeItem(key);
-		};
-	};
+	module.exports = "<div class=\"popup-wrapper flexible row space-between\">\r\n\t<div class=\"full-width-image-wrapper\">\r\n\t\t<img ng-src=\"{{popupImage.blob}}\" alt=\"\">\r\n\t\t<div class=\"info-panel-container second flexible row\">\r\n\t\t\t<div class=\"info-dislike edit\" ng-click=\"addLikeDislike($event)\" data-choose=\"dislike\" ng-class=\"{active: activeDislike}\">\r\n\t\t\t\t<p class=\"info-text\" ng-bind=\"popupImage.dislike\"></p>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"info-like edit\" ng-click=\"addLikeDislike($event)\" data-choose=\"like\" ng-class=\"{active: activeLike}\">\r\n\t\t\t\t<p class=\"info-text\" ng-bind=\"popupImage.like\"></p>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</div>\r\n\r\n\t<div class=\"comments-container\">\r\n\t\t<p class=\"comments-amount\">Comments: <span ng-bind=\"amountOfComments[popupImage.id]\"></span></p>\r\n\t\t<div class=\"comments-wrapper\">\r\n\r\n\t\t\t<div class=\"comment-container\" ng-repeat=\"comm in comments\">\r\n\t\t\t\t<div class=\"comment-info flexible row space-between\">\r\n\t\t\t\t\t<p class=\"\" ng-bind=\"comm.nickname\"></p>\r\n\t\t\t\t\t<p class=\"\" ng-bind=\"comm.day +' ' + comm.time\"></p>\r\n\t\t\t\t</div>\r\n\t\t\t\t<p class=\"comment\" ng-bind=\"comm.comment\"></p>\r\n\t\t\t</div>\r\n\r\n\t\t</div>\r\n\r\n\t\t<form action=\"\" name=\"form-comment\" class=\"form-container\" ng-submit=\"submitComment($event)\">\r\n\t\t\t<input type=\"text\" name=\"nickName\" placeholder=\"Type your nickname here...\" class=\"nick-name\" maxlength=\"20\" ng-model=\"form.nickname\">\r\n\t\t\t<div class=\"textarea-wrapper\">\r\n\t\t\t\t<textarea type=\"text\" placeholder=\"Write your comment here...\" class=\"textarea\" rows=\"25\" cols=\"5\" ng-model=\"form.comment\"></textarea>\r\n\t\t\t\t<input type=\"image\" name=\"submit\" class=\"submit\" value=\"\" >\r\n\t\t\t</div>\r\n\t\t</form>\r\n\t</div>\r\n\r\n\r\n\t<div class=\"close-button\" ng-click=\"closePopup()\"></div>\r\n</div>";
 
 /***/ })
 /******/ ]);
